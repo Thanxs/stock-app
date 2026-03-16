@@ -1,0 +1,15 @@
+<div class="stock-card" [ngClass]="cardClass()">
+  <div class="header">
+    <h3>{{ stock().name }}</h3>
+    <button (click)="toggle()">{{ enabled() ? 'ON' : 'OFF' }}</button>
+  </div>
+
+  <div class="price">{{ stock().price | number: '1.2-2' }}</div>
+
+  <div class="info">
+    <div>Daily High: {{ stock().high }}</div>
+    <div>Daily Low: {{ stock().low }}</div>
+    <div class="desktop-only">52 Week High: {{ stock().week52High }}</div>
+    <div class="desktop-only">52 Week Low: {{ stock().week52Low }}</div>
+  </div>
+</div>
