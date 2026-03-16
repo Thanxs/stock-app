@@ -1,0 +1,49 @@
+.stock-card {
+  flex: 1 1 calc(25% - 16px);
+  min-width: 250px;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background 0.3s;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.green {
+  background: #1f7a3f;
+}
+
+.red {
+  background: #8b1c1c;
+}
+
+.gray {
+  background: #555;
+}
+
+@media (max-width: 1024px) {
+  .stock-card {
+    flex: 1 1 calc(50% - 16px);
+  }
+}
+
+@media (max-width: 600px) {
+  .stock-card {
+    flex: 1 1 100%;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+}
