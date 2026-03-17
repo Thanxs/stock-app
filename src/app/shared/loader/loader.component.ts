@@ -1,8 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, inject } from '@angular/core';
+import { LoaderService } from '../../services/loader/loader.service';
 
 @Component({
-  selector: "loader",
-  templateUrl: "./loader.component.html",
-  styleUrls: ["./loader.component.scss"]
+  selector: 'loader',
+  templateUrl: './loader.component.html',
+  styleUrls: ['./loader.component.scss'],
 })
-export class LoaderComponent {}
+export class LoaderComponent {
+  protected readonly loader = inject(LoaderService);
+}

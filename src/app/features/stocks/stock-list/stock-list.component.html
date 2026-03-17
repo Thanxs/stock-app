@@ -2,8 +2,4 @@
   @for (stock of stocks(); track stock.symbol) {
     <stock-card [stock]="stock" />
   }
-
-  @if (stocks().length === 0) {
-    <loader />
-  }
 </div>

@@ -1,15 +1,41 @@
-<div class="stock-card" [ngClass]="cardClass()">
-  <div class="header">
-    <h3>{{ stock().name }}</h3>
-    <button (click)="toggle()">{{ enabled() ? 'ON' : 'OFF' }}</button>
-  </div>
+<article class="stock-card" [ngClass]="cardClass()">
+  <header class="card-header">
+    <h2 class="symbol">{{ stock().symbol }}</h2>
+    <button
+      type="button"
+      class="toggle"
+      [class.toggle--on]="enabled()"
+      [attr.aria-pressed]="enabled()"
+      (click)="toggle()"
+    >
+      <span class="toggle__track">
+        <span class="toggle__thumb"></span>
+      </span>
+      <span class="toggle__label">{{ enabled() ? 'Live' : 'Pause' }}</span>
+    </button>
+  </header>
 
-  <div class="price">{{ stock().price | number: '1.2-2' }}</div>
+  <p class="price">
+    <span class="price__currency">$</span>
+    <span class="price__value">{{ stock().price | number: '1.2-2' }}</span>
+  </p>
 
-  <div class="info">
-    <div>Daily High: {{ stock().high }}</div>
-    <div>Daily Low: {{ stock().low }}</div>
-    <div class="desktop-only">52 Week High: {{ stock().week52High }}</div>
-    <div class="desktop-only">52 Week Low: {{ stock().week52Low }}</div>
-  </div>
-</div>
+  <dl class="info">
+    <div class="info__row">
+      <dt>Daily High</dt>
+      <dd>{{ stock().high | number: '1.2-2' }}</dd>
+    </div>
+    <div class="info__row">
+      <dt>Daily Low</dt>
+      <dd>{{ stock().low | number: '1.2-2' }}</dd>
+    </div>
+    <div class="info__row desktop-only">
+      <dt>52W High</dt>
+      <dd>{{ stock().week52High | number: '1.2-2' }}</dd>
+    </div>
+    <div class="info__row desktop-only">
+      <dt>52W Low</dt>
+      <dd>{{ stock().week52Low | number: '1.2-2' }}</dd>
+    </div>
+  </dl>
+</article>
