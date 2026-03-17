@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import WebSocket, { WebSocketServer } from 'ws';
 import axios from 'axios';
+
 import type { Stock } from './models/interfaces/stock.interface';
 import { StockSymbols } from './models/enums/stock-symbols.enum';
 
@@ -16,11 +17,10 @@ const symbols = [StockSymbols.AAPL, StockSymbols.GOOGL, StockSymbols.MSFT, Stock
 const wss = new WebSocketServer({ port: PORT });
 console.log(`WebSocket server running on ws://localhost:${PORT}`);
 
-// Функция получения котировок
 async function fetchStock(symbol: string): Promise<Stock | null> {
   try {
     const res = await axios.get(
-      `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`
+      `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`,
     );
 
     return {
@@ -29,7 +29,8 @@ async function fetchStock(symbol: string): Promise<Stock | null> {
       price: res.data.c,
       high: res.data.h,
       low: res.data.l,
-      week52High: res.data.pc * 1.2, // mock 52-week
+      // Quote API does not provide 52-week high/low — using ±20% of previous close as approximation
+      week52High: res.data.pc * 1.2,
       week52Low: res.data.pc * 0.8,
     };
   } catch (err: any) {
@@ -38,7 +39,6 @@ async function fetchStock(symbol: string): Promise<Stock | null> {
   }
 }
 
-// Подключение клиента
 wss.on('connection', (ws: WebSocket) => {
   console.log('Client connected');
 
@@ -49,7 +49,7 @@ wss.on('connection', (ws: WebSocket) => {
         ws.send(JSON.stringify(stock));
       }
     }
-  }, 2000); // каждые 2 секунды
+  }, 4000);
 
   ws.on('close', () => {
     clearInterval(interval);

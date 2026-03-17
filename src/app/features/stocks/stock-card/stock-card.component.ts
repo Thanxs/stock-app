@@ -1,6 +1,7 @@
 import { Component, input, signal, computed } from '@angular/core';
 import { Stock } from '../../../models/interfaces/stock.interface';
 import { DecimalPipe, NgClass } from '@angular/common';
+import { PriceTrend } from './price-trend.enum';
 
 @Component({
   selector: 'stock-card',
@@ -9,22 +10,26 @@ import { DecimalPipe, NgClass } from '@angular/common';
   styleUrls: ['./stock-card.component.scss'],
 })
 export class StockCardComponent {
-  // input() возвращает сигнал — computed теперь отслеживает изменения
-  stock = input.required<Stock>();
+  public readonly stock = input.required<Stock>();
+  public readonly enabled = signal(true);
+  public readonly cardClass = computed(() => {
+    if (!this.enabled()) {
+      return PriceTrend.Neutral;
+    }
 
-  enabled = signal(true);
+    const stock = this.stock();
+    if (stock.previousPrice && stock.price > stock.previousPrice) {
+      return PriceTrend.Up;
+    }
 
-  cardClass = computed(() => {
-    if (!this.enabled()) return 'gray';
+    if (stock.previousPrice && stock.price < stock.previousPrice) {
+      return PriceTrend.Down;
+    }
 
-    const s = this.stock(); // теперь computed видит изменения stock
-    if (s.previousPrice && s.price > s.previousPrice) return 'green';
-    if (s.previousPrice && s.price < s.previousPrice) return 'red';
-
-    return 'gray';
+    return PriceTrend.Neutral;
   });
 
-  toggle(): void {
-    this.enabled.update((v) => !v);
+  public toggle(): void {
+    this.enabled.update((isEnabled: boolean) => !isEnabled);
   }
 }

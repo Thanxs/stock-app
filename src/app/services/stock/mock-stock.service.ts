@@ -3,9 +3,9 @@ import { interval, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MockStockService {
-  stocks = ['AAPL', 'MSFT', 'TSLA', 'GOOGL'];
+  private stocks = ['AAPL', 'MSFT', 'TSLA', 'GOOGL'];
 
-  getStream() {
+  public getStream() {
     return interval(2000).pipe(
       map(() => {
         const price = Math.random() * 1000;
